@@ -1,7 +1,12 @@
 import * as React from "react";
+import ChangeForm from "../../components/Change/ChangeForm";
 
 const ChangePage = () => {
-  return <div>привет босс</div>;
+  return (
+    <>
+      <ChangeForm />
+    </>
+  );
 };
 
 export default ChangePage;

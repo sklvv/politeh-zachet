@@ -1,9 +1,7 @@
 import { Box, Button, TextField, Typography } from "@mui/material";
-import { signInWithEmailAndPassword } from "firebase/auth";
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../hooks";
-import { auth } from "../../lib/firebase";
 import { setEmail, setPass } from "../../store/authSlice";
 import { signIn } from "../../store/userSlice";
 import { styles } from "./styles";
@@ -20,9 +18,6 @@ const AuthForm = () => {
   const handleSubmit = async () => {
     await dispatch(signIn({ email, pass }));
   };
-  // const handleSubmit = () => {
-  //   signInWithEmailAndPassword(auth, email, pass);
-  // };
   return (
     <Box sx={styles.container}>
       <Box>

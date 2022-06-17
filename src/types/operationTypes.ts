@@ -1,6 +1,8 @@
 export interface IOperation {
   date: string;
   currencyFrom: string;
+  sum: string;
   currencyTo: string;
-  profit: number;
+  result?: string;
+  profit?: number;
 }

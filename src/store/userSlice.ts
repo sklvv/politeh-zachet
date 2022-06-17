@@ -7,7 +7,9 @@ import {
 } from "firebase/auth";
 import { ref, get } from "firebase/database";
 import { auth, db } from "../lib/firebase";
+import getCurrencyName from "../lib/getCurrencyName";
 import { IAuth } from "../types/authTypes";
+import { IOperation } from "../types/operationTypes";
 import { IUser } from "../types/userTypes";
 
 export const signIn = createAsyncThunk<IUser, IAuth, { rejectValue: string }>(
@@ -41,7 +43,17 @@ const initialState: IUser = {
 export const userSlice = createSlice({
   name: "user",
   initialState,
-  reducers: {},
+  reducers: {
+    setDeal: (state: IUser, action: PayloadAction<IOperation>) => {
+      const op = action.payload;
+      state.operations.unshift({
+        currencyFrom: getCurrencyName(op.currencyFrom),
+        currencyTo: getCurrencyName(op.currencyTo),
+        date: op.date,
+        sum: op.sum,
+      });
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(signIn.pending, (state: IUser, action) => {
       state.isLoading = false;
@@ -52,7 +64,6 @@ export const userSlice = createSlice({
         state.isLoading = false;
         state.isAuth = action.payload.isAuth;
         state.uid = action.payload.uid;
-        state.operations = action.payload.operations;
       }
     );
     builder.addCase(userPersistence.pending, (state: IUser, action) => {
@@ -65,7 +76,6 @@ export const userSlice = createSlice({
         state.isLoading = false;
         state.isAuth = action.payload.isAuth;
         state.uid = action.payload.uid;
-        state.operations = action.payload.operations;
       }
     );
     builder.addCase(signIn.rejected, (state: IUser, action) => {
@@ -82,5 +92,5 @@ export const userSlice = createSlice({
     });
   },
 });
-export const {} = userSlice.actions;
+export const { setDeal } = userSlice.actions;
 export default userSlice.reducer;
